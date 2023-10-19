@@ -1,7 +1,7 @@
 package database
 
 import (
-	"art-local/model"
+	"art-local/features/model"
 	"art-local/config"
 	"fmt"
 
