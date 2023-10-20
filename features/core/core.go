@@ -1,14 +1,14 @@
 package core
 
 type UserCore struct {
-	UserID		uint
+	ID			uint
 	Name		string
 	Email		string
 	Password	string
 }
 
 type EventCore struct {
-	EventID		uint
+	//EventID		uint
 	Title		string
 	Date		string
 	Description	string
@@ -17,7 +17,7 @@ type EventCore struct {
 }
 
 type ArtworkCore struct {
-	ArtworkID	uint
+	//ArtworkID	uint
 	Title		string
 	Description	string
 	UserID		uint

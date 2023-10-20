@@ -2,14 +2,14 @@ package helpers
 
 import "golang.org/x/crypto/bcrypt"
 
-func Hash(pass string) (string, error) {
+func Hash(pass string) ([]byte, error) {
 	password := []byte(pass)
-	value := 8
-	HashPass, err := bcrypt.GenerateFromPassword(password, value)
+	cost := 8
+	hashedPass, err := bcrypt.GenerateFromPassword(password, cost)
 	if err != nil {
-		return "", err
+		return nil, err
 	}
-	return string(HashPass), nil
+	return hashedPass, nil
 }
 
 func Compare(hash, pass []byte) (bool, error) {

@@ -17,7 +17,6 @@ func FromRequestToUserCore(Req request.UserRequest) UserCore {
 
 func FromCoreToUserModel(core UserCore) model.User {
 	user := model.User{
-		UserID: core.UserID,
 		Name: core.Name,
 		Email: core.Email,
 		Password: core.Password,
@@ -27,7 +26,7 @@ func FromCoreToUserModel(core UserCore) model.User {
 
 func FromModelToUserCore(model model.User) UserCore {
 	user := UserCore{
-		UserID: model.UserID,
+		//UserID: model.UserID,
 		Name: model.Name,
 		Email: model.Email,
 		Password: model.Password,
@@ -37,7 +36,7 @@ func FromModelToUserCore(model model.User) UserCore {
 
 func FromCoreToUserResponse(users UserCore) response.UserResponse {
 	user := response.UserResponse{
-		UserID: users.UserID,
+		//UserID: users.UserID,
 		Name: users.Name,
 		Email: users.Email,
 	}

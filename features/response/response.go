@@ -3,13 +3,12 @@ package response
 import "github.com/labstack/echo/v4"
 
 type UserResponse struct {
-	UserID uint
-	Name   string `json:"name"`
-	Email  string `json:"email"`
+	Name   		string 	`json:"name"`
+	Email  		string 	`json:"email"`
+	Password	string	`json:"password"`
 }
 
 type EventResponse struct {
-	EventID     uint
 	Title       string `json:"title"`
 	Date        string `json:"date"`
 	Description string `json:"description"`
@@ -18,7 +17,6 @@ type EventResponse struct {
 }
 
 type ArtworkResponse struct {
-	ArtworkID   uint
 	Title       string `json:"title"`
 	Description string `json:"description"`
 	UserID      uint

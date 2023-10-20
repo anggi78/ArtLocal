@@ -1,17 +1,18 @@
 package repositories
 
 import (
+	"art-local/features/core"
 	"art-local/features/model"
 	"art-local/helpers"
-
+	"log"
 
 	"gorm.io/gorm"
 )
 
 type UserRepoInterface interface {
-	CreateUser(user *model.User) error
-	Login(email string, password string) (*model.User, error)
-	FindAll([]model.User) error
+	GetAll() ([]core.UserCore, error)
+	CreateUser(core.UserCore) (core.UserCore, error)
+	Login(email string, password string) (core.UserCore, error)
 }
 
 type userRepo struct {
@@ -22,33 +23,45 @@ func NewUserRepo(DB *gorm.DB) *userRepo {
 	return &userRepo{db: DB}
 }
 
-func (u *userRepo) FindAll([]model.User) error {
+func (u *userRepo) GetAll() ([]core.UserCore, error) {
 	var users []model.User
 	err := u.db.Find(&users).Error
 	if err != nil {
-		return err
+		return nil, err
 	}
-	return nil
+
+	userCore := []core.UserCore{}
+	for _, user := range users {
+		v := core.FromModelToUserCore(user)
+		userCore = append(userCore, v)
+	}
+	return userCore, nil
 }
 
-func (u *userRepo) CreateUser(user *model.User) error {
-	if err := u.db.Create(user).Error; err != nil {
-		return err
+func (u *userRepo) CreateUser(user core.UserCore) (core.UserCore, error) {
+	insert := core.FromCoreToUserModel(user)
+	err := u.db.Create(&insert).Error
+	if err != nil {
+		return user, err
 	}
-	return nil
+	data := core.FromModelToUserCore(insert)
+	return data, nil
 }
 
-func (u *userRepo) Login(email string, password string) (*model.User, error) {
+func (u *userRepo) Login(email string, password string) (core.UserCore, error) {
 	var user model.User
+	var data core.UserCore
 	
 	err := u.db.Where("email= ?", email).First(&user).Error
 	if err != nil {
-		return nil, err
+		return data, err
 	}
 
 	comparePass, err := helpers.Compare([]byte(user.Password), []byte(password))
 	if err != nil || !comparePass {
-		return nil, err
+		return data, err
 	}
-	return &user, nil
+	data = core.FromModelToUserCore(user)
+	log.Println(data)
+	return data, nil
 }
