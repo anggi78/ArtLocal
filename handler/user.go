@@ -5,6 +5,7 @@ import (
 	"art-local/features/request"
 	"art-local/features/response"
 	"art-local/services"
+	"strconv"
 
 	"github.com/labstack/echo/v4"
 )
@@ -24,7 +25,7 @@ func (u *userHandler) Register(e echo.Context) error {
 		return response.ResponseJSON(e, 400, err.Error(), nil)
 	}
 
-	insert := core.FromRequestToUserCore(userReq)
+	insert := core.FromRequestToUser(userReq)
 	userData, err := u.userService.CreateUser(insert)
 	if err != nil {
 		return response.ResponseJSON(e, 400, err.Error(), nil)
@@ -72,4 +73,45 @@ func (u *userHandler) GetAllUsers(e echo.Context) error {
 		respon = append(respon, userRes)
 	}
 	return response.ResponseJSON(e, 200, "success", respon)
+}
+
+func (u *userHandler) Update(e echo.Context) error {
+    // idStr := e.Param("userID")
+    // id, err := strconv.Atoi(idStr)
+    // if err != nil {
+    //     return response.ResponseJSON(e, 401, "Invalid user ID", nil)
+    // }
+
+    // newUser := request.UserRequest{}
+
+    // err = e.Bind(&newUser)
+    // if err != nil {
+    //     return response.ResponseJSON(e, 401, err.Error(), nil)
+    // }
+
+    // newUsers := core.FromRequestToUser(newUser)
+    // updatedUser, updateErr := u.userService.Update(&newUsers, id)
+    // if updateErr != nil {
+    //     return response.ResponseJSON(e, 401, updateErr.Error(), nil)
+    // }
+    // return response.ResponseJSON(e, 200, "success", updatedUser)
+
+	idStr := e.Param("id")
+    id, err := strconv.Atoi(idStr)
+    if err != nil {
+        return response.ResponseJSON(e, 401, "Invalid user ID", nil)
+    }
+	newUser := request.UserRequest{}
+
+	err = e.Bind(&newUser)
+	if err != nil {
+		return response.ResponseJSON(e, 400, err.Error(), nil)
+	}
+	
+    newUsers := core.FromRequestToUser(newUser)
+    updatedUser, updateErr := u.userService.Update(&newUsers, id)
+    if updateErr != nil {
+        return response.ResponseJSON(e, 401, updateErr.Error(), nil)
+    }
+    return response.ResponseJSON(e, 200, "success", updatedUser)
 }

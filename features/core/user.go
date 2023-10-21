@@ -6,8 +6,8 @@ import (
 	"art-local/features/response"
 )
 
-func FromRequestToUserCore(Req request.UserRequest) UserCore {
-	user := UserCore{
+func FromRequestToUser(Req request.UserRequest) User {
+	user := User{
 		Name: Req.Name,
 		Email: Req.Email,
 		Password: Req.Password,
@@ -15,7 +15,7 @@ func FromRequestToUserCore(Req request.UserRequest) UserCore {
 	return user
 }
 
-func FromCoreToUserModel(core UserCore) model.User {
+func FromCoreToUserModel(core User) model.User {
 	user := model.User{
 		Name: core.Name,
 		Email: core.Email,
@@ -24,8 +24,8 @@ func FromCoreToUserModel(core UserCore) model.User {
 	return user
 }
 
-func FromModelToUserCore(model model.User) UserCore {
-	user := UserCore{
+func FromModelToUser(model model.User) User {
+	user := User{
 		Name: model.Name,
 		Email: model.Email,
 		Password: model.Password,
@@ -33,7 +33,7 @@ func FromModelToUserCore(model model.User) UserCore {
 	return user
 }
 
-func FromCoreToUserResponse(users UserCore) response.UserResponse {
+func FromCoreToUserResponse(users User) response.UserResponse {
 	user := response.UserResponse{
 		Name: users.Name,
 		Email: users.Email,

@@ -1,6 +1,6 @@
 package core
 
-type UserCore struct {
+type User struct {
 	ID			uint
 	Name		string
 	Email		string

@@ -11,16 +11,17 @@ import (
 	"gorm.io/gorm"
 )
 
-func UserRoute(app *echo.Echo, db *gorm.DB) {
+func UserRoute(e *echo.Echo, db *gorm.DB) {
 	repositories := repositories.NewUserRepo(db)
 	service := services.NewUserService(repositories)
 	handler := handler.NewUserHandler(service)
 
-	app.POST("/users/register", handler.Register)
-	app.POST("users/login", handler.Login)
+	e.POST("/users/register", handler.Register)
+	e.POST("/users/login", handler.Login)
 
-	apps := app.Group("users")
-	apps.Use(echojwt.JWT([]byte(os.Getenv("JWT_SECRET"))))
+	app := e.Group("")
+	app.Use(echojwt.JWT([]byte(os.Getenv("JWT_SECRET"))))
 
 	app.GET("/users", handler.GetAllUsers)
+	app.PUT("/users/:id", handler.Update)
 }
