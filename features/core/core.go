@@ -8,7 +8,6 @@ type UserCore struct {
 }
 
 type EventCore struct {
-	//EventID		uint
 	Title		string
 	Date		string
 	Description	string
@@ -17,7 +16,6 @@ type EventCore struct {
 }
 
 type ArtworkCore struct {
-	//ArtworkID	uint
 	Title		string
 	Description	string
 	UserID		uint

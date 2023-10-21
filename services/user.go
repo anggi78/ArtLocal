@@ -35,6 +35,7 @@ func (u *userService) Login(email string, password string) (core.UserCore, strin
 		return userData, "", err
 	}
 
+	log.Println("login : ", userData.Email)
 	token, _ := helpers.GenerateToken(userData.ID)
 	if token != "" {
 		log.Printf("Token : %s\n", token)
