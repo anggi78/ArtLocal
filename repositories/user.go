@@ -13,7 +13,7 @@ type UserRepoInterface interface {
 	GetAll() ([]core.User, error)
 	CreateUser(core.User) (core.User, error)
 	Login(email string, password string) (core.User, error)
-	Update(userID int, user *core.User) (*model.User, error)
+	Update(userID int, user core.User) error
 	FindByID(userID int) (*core.User, error)
 }
 
@@ -74,24 +74,19 @@ func (u *userRepo) FindByID(userID int) (*core.User, error) {
 	return &user, nil
 }
 
-func (u *userRepo) Update(userID int, user *core.User) (*model.User, error) {
-	// updateUser := u.db.Table("user").Where("id = ?", userID).Updates(core.User{Name: user.Name, Email: user.Email, Password: user.Password})
-	// if updateUser.Error != nil {
-	// 	return nil, updateUser.Error
-	// }
-	// return user, nil
-	var existingUser model.User
+func (u *userRepo) Update(userID int, user core.User) error {
+    var existingUser model.User
 
-	if err := u.db.First(&existingUser, userID).Error; err != nil {
-		return nil, err
-	}
+    if err := u.db.First(&existingUser, userID).Error; err != nil {
+        return err
+    }
 
-	existingUser.Name = user.Name
-	existingUser.Email = user.Email
-	existingUser.Password = user.Password
+    existingUser.Name = user.Name
+    existingUser.Email = user.Email
+    existingUser.Password = user.Password
 
-	if err := u.db.Save(&existingUser).Error; err != nil {
-		return nil, err
-	}
-	return &existingUser, nil
+    if err := u.db.Save(&existingUser).Error; err != nil {
+        return err
+    }
+    return nil
 }

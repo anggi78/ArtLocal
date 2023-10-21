@@ -76,40 +76,20 @@ func (u *userHandler) GetAllUsers(e echo.Context) error {
 }
 
 func (u *userHandler) Update(e echo.Context) error {
-    // idStr := e.Param("userID")
-    // id, err := strconv.Atoi(idStr)
-    // if err != nil {
-    //     return response.ResponseJSON(e, 401, "Invalid user ID", nil)
-    // }
-
-    // newUser := request.UserRequest{}
-
-    // err = e.Bind(&newUser)
-    // if err != nil {
-    //     return response.ResponseJSON(e, 401, err.Error(), nil)
-    // }
-
-    // newUsers := core.FromRequestToUser(newUser)
-    // updatedUser, updateErr := u.userService.Update(&newUsers, id)
-    // if updateErr != nil {
-    //     return response.ResponseJSON(e, 401, updateErr.Error(), nil)
-    // }
-    // return response.ResponseJSON(e, 200, "success", updatedUser)
-
-	idStr := e.Param("id")
+    idStr := e.Param("id")
     id, err := strconv.Atoi(idStr)
     if err != nil {
         return response.ResponseJSON(e, 401, "Invalid user ID", nil)
     }
-	newUser := request.UserRequest{}
+    newUser := request.UserRequest{}
 
-	err = e.Bind(&newUser)
-	if err != nil {
-		return response.ResponseJSON(e, 400, err.Error(), nil)
-	}
-	
+    err = e.Bind(&newUser)
+    if err != nil {
+        return response.ResponseJSON(e, 400, err.Error(), nil)
+    }
+
     newUsers := core.FromRequestToUser(newUser)
-    updatedUser, updateErr := u.userService.Update(&newUsers, id)
+    updatedUser, updateErr := u.userService.Update(id, newUsers)
     if updateErr != nil {
         return response.ResponseJSON(e, 401, updateErr.Error(), nil)
     }

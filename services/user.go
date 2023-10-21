@@ -2,7 +2,6 @@ package services
 
 import (
 	"art-local/features/core"
-	"art-local/features/model"
 	"art-local/helpers"
 	"art-local/repositories"
 	"log"
@@ -12,7 +11,7 @@ type UserServiceInterface interface {
 	CreateUser(user core.User) (core.User, error)
 	Login(email string, password string) (core.User, string, error)
 	GetAll() ([]core.User, error)
-	Update(userID int, user *core.User) (*model.User, error)
+	Update(userID int, user core.User) (core.User, error)
 }
 
 type userService struct {
@@ -47,24 +46,24 @@ func (u *userService) Login(email string, password string) (core.User, string, e
 
 func (u *userService) GetAll() ([]core.User, error) {
 	users, err := u.repo.GetAll()
-	if err != nil{
+	if err != nil {
 		return nil, err
 	}
 	return users, nil
 }
 
-func (u *userService) Update(userID int, user *core.User) (*model.User, error) {
+func (u *userService) Update(userID int, user core.User) (core.User, error) {
     existingUser, err := u.repo.FindByID(userID)
     if err != nil {
-        return nil, err
+        return core.User{}, err
     }
 
     existingUser.Name = user.Name
     existingUser.Email = user.Email
     existingUser.Password = user.Password
 
-    if err != u.repo.Update(&existingUser).Error; err != nil {
-        return nil, err
+    if err := u.repo.Update(userID, *existingUser); err != nil {
+        return core.User{}, err
     }
-    return &existingUser, nil
+    return *existingUser, nil
 }
