@@ -1,8 +1,8 @@
 package main
 
 import (
-	"art-local/config"
-	"art-local/database"
+	"art-local/app/config"
+	"art-local/app/database"
 	"art-local/route"
 	"fmt"
 
