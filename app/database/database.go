@@ -1,8 +1,8 @@
 package database
 
 import (
-	"art-local/features/model"
 	"art-local/app/config"
+	"art-local/features/model"
 	"fmt"
 
 	"gorm.io/driver/mysql"

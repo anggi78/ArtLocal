@@ -11,7 +11,7 @@ type UserServiceInterface interface {
 	CreateUser(user core.User) (core.User, error)
 	Login(email string, password string) (core.User, string, error)
 	GetAll() ([]core.User, error)
-	Update(userID int, user core.User) (core.User, error)
+	Update(userID int, user core.User) (core.User, string, error)
 }
 
 type userService struct {
@@ -23,6 +23,7 @@ func NewUserService(repo repositories.UserRepoInterface) *userService {
 }
 
 func (u *userService) CreateUser(user core.User) (core.User, error) {
+	user.Password = helpers.HashPassword(user.Password)
 	users, err := u.repo.CreateUser(user)
 	if err != nil {
 		return users, err
@@ -52,18 +53,19 @@ func (u *userService) GetAll() ([]core.User, error) {
 	return users, nil
 }
 
-func (u *userService) Update(userID int, user core.User) (core.User, error) {
+func (u *userService) Update(userID int, user core.User) (core.User, string, error) {
+	user.Password = helpers.HashPassword(user.Password)
     existingUser, err := u.repo.FindByID(userID)
     if err != nil {
-        return core.User{}, err
+        return core.User{}, "", err
     }
 
     existingUser.Name = user.Name
     existingUser.Email = user.Email
-    existingUser.Password = user.Password
+	existingUser.Password = user.Password
 
     if err := u.repo.Update(userID, *existingUser); err != nil {
-        return core.User{}, err
+        return core.User{}, "", err
     }
-    return *existingUser, nil
+    return *existingUser, "", nil
 }

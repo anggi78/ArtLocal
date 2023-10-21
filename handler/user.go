@@ -89,7 +89,7 @@ func (u *userHandler) Update(e echo.Context) error {
     }
 
     newUsers := core.FromRequestToUser(newUser)
-    updatedUser, updateErr := u.userService.Update(id, newUsers)
+    updatedUser, _, updateErr := u.userService.Update(id, newUsers)
     if updateErr != nil {
         return response.ResponseJSON(e, 401, updateErr.Error(), nil)
     }
