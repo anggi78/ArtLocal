@@ -22,9 +22,15 @@ type ArtworkResponse struct {
 	UserID      uint
 }
 
-type Follow_eventResponse struct {
+type FollowEventResponse struct {
 	UserID  uint
 	EventID uint
+}
+
+type AdminResponse struct {
+	Name   		string 	`json:"name"`
+	Email  		string 	`json:"email"`
+	Password	string	`json:"password"`
 }
 
 func ResponseJSON(e echo.Context, status int, message string, data interface{}) error {

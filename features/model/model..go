@@ -7,8 +7,9 @@ type User struct {
 	gorm.Model
 	Name         string `gorm:"not null" valid:"required~your name is required"`
 	Email        string `gorm:"not null;unique" valid:"required~your email is required, email~invalid email format"`
-	Password     string `gorm:"not null" valid:"required~your password is required,minstringlength(6)~password has to have a minimum length of 6 characters"`
-	Follow_event []Follow_event
+	Password     string `gorm:"not null"`
+	Role      	 string `gorm:"type:ENUM('user', 'admin');not null;default:'user'"`
+	Follow_event []FollowEvent
 	Artwork      []Artwork
 }
 
@@ -19,7 +20,7 @@ type Event struct {
 	Description  string `gorm:"not null;unique" valid:"required~your description is required"`
 	Location     string `gorm:"not null" valid:"required~your location is required"`
 	AdminID      uint
-	Follow_event []Follow_event
+	Follow_event []FollowEvent
 }
 
 type Artwork struct {
@@ -30,8 +31,16 @@ type Artwork struct {
 	UserID uint
 }
 
-type Follow_event struct {
+type FollowEvent struct {
 	gorm.Model
 	UserID  uint
 	EventID uint
+}
+
+type Admin struct {
+	gorm.Model
+	Name         string `gorm:"not null" valid:"required~your name is required"`
+	Email        string `gorm:"not null;unique" valid:"required~your email is required, email~invalid email format"`
+	Password     string `gorm:"not null"`	
+	Event []Event
 }

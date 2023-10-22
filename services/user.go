@@ -31,17 +31,13 @@ func (u *userService) CreateUser(user core.User) (core.User, error) {
 	return users, nil
 }
 
-func (u *userService) Login(email string, password string) (core.User, string, error) {
-	userData, err := u.repo.Login(email, password)
+func (s *userService) Login(email string, password string) (core.User, string, error) {
+	userData, err := s.repo.Login(email, password)
 	if err != nil {
 		return userData, "", err
 	}
-
-	log.Println("login : ", userData.Email)
+	log.Println("role in login service : ", userData.Role)
 	token, _ := helpers.GenerateToken(userData.ID)
-	if token != "" {
-		log.Printf("Token : %s\n", token)
-	}
 	return userData, token, nil
 }
 

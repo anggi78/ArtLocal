@@ -20,6 +20,7 @@ func FromCoreToUserModel(core User) model.User {
 		Name: core.Name,
 		Email: core.Email,
 		Password: core.Password,
+		Role: core.Role,
 	}
 	return user
 }
@@ -29,6 +30,7 @@ func FromModelToUser(model model.User) User {
 		Name: model.Name,
 		Email: model.Email,
 		Password: model.Password,
+		Role: model.Role,
 	}
 	return user
 }

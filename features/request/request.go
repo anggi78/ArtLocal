@@ -20,7 +20,13 @@ type ArtworkRequest struct {
 	UserID		uint
 }
 
-type Follow_eventRequest struct {
+type FollowEventRequest struct {
 	UserID		uint
 	EventID		uint	
+}
+
+type AdminRequest struct {
+	Name		string	`json:"name" form:"name"`
+	Email		string	`json:"email" form:"email"`
+	Password	string	`json:"password" form:"password"`
 }

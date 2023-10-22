@@ -5,6 +5,7 @@ type User struct {
 	Name		string
 	Email		string
 	Password	string
+	Role		string
 }
 
 type EventCore struct {
@@ -21,7 +22,14 @@ type ArtworkCore struct {
 	UserID		uint
 }
 
-type Follow_eventCore struct {
+type FollowEventCore struct {
 	UserID 	uint
 	EventID uint
+}
+
+type Admin struct {
+	ID			uint
+	Name		string
+	Email		string
+	Password	string
 }
