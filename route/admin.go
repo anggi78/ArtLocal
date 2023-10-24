@@ -23,11 +23,6 @@ func AdminRoute(e *echo.Echo, db *gorm.DB) {
 	admin := e.Group("")
 	admin.Use(echojwt.JWT([]byte(os.Getenv("JWT_SECRET"))))
 
-	//app.GET("/users", handler.GetAllUsers)
-
 	// update profil admin
 	admin.PUT("/admin/:id", handler.Update)
-
-	// admin buat event
-	admin.POST("/admin/event", handler.CreateEvent)
 }

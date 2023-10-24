@@ -2,6 +2,7 @@ package route
 
 import (
 	"art-local/handler"
+	"art-local/helpers"
 	"art-local/repositories"
 	"art-local/services"
 	"os"
@@ -17,15 +18,16 @@ func UserRoute(e *echo.Echo, db *gorm.DB) {
 	handler := handler.NewUserHandler(service)
 
 	// user register dan login
-	e.POST("/users/register", handler.Register)
-	e.POST("/users/login", handler.Login)
+	e.POST("/users/register", handler.RegisterUsers)
+	e.POST("/users/login", handler.LoginUsers)
 
 	app := e.Group("")
 	app.Use(echojwt.JWT([]byte(os.Getenv("JWT_SECRET"))))
 
-	// user update profil
-	app.PUT("/users/:id", handler.Update)
+	// user 
+	app.PUT("/users/:id", handler.UpdateUsers, helpers.AuthMiddleware("user"))
 
-	
-	app.GET("/users", handler.GetAllUsers)
+	// admin
+	app.GET("/users", handler.GetAllUsers, helpers.AuthMiddleware("admin"))
+	app.DELETE("/users/:id", handler.DeleteUsers, helpers.AuthMiddleware("admin"))
 }

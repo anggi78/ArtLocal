@@ -18,7 +18,7 @@ func NewUserHandler(userService services.UserServiceInterface) *userHandler {
 	return &userHandler{userService}
 }
 
-func (u *userHandler) Register(e echo.Context) error {
+func (u *userHandler) RegisterUsers(e echo.Context) error {
 	userReq := request.UserRequest{}
 	err := e.Bind(&userReq)
 	if err != nil {
@@ -35,7 +35,7 @@ func (u *userHandler) Register(e echo.Context) error {
 	return response.ResponseJSON(e, 200, "success", respon)
 }
 
-func (u *userHandler) Login(e echo.Context) error {
+func (u *userHandler) LoginUsers(e echo.Context) error {
 	userReq := request.UserRequest{}
 	err := e.Bind(&userReq)
 	if err != nil {
@@ -75,7 +75,7 @@ func (u *userHandler) GetAllUsers(e echo.Context) error {
 	return response.ResponseJSON(e, 200, "success", respon)
 }
 
-func (u *userHandler) Update(e echo.Context) error {
+func (u *userHandler) UpdateUsers(e echo.Context) error {
     idStr := e.Param("id")
     id, err := strconv.Atoi(idStr)
     if err != nil {
@@ -94,4 +94,21 @@ func (u *userHandler) Update(e echo.Context) error {
         return response.ResponseJSON(e, 401, updateErr.Error(), nil)
     }
     return response.ResponseJSON(e, 200, "success", updatedUser)
+}
+
+func (u *userHandler) DeleteUsers(e echo.Context) error {
+	idStr := e.Param("id")
+	id, err := strconv.ParseUint(idStr, 10, 64)
+	if err != nil {
+		return response.ResponseJSON(e, 400, "Invalid ID", nil)
+	}
+
+	user, err := u.userService.Delete(int(id))
+	if err != nil {
+		return response.ResponseJSON(e, 400, err.Error(), nil)
+	}
+	if !user {
+		return response.ResponseJSON(e, 400, err.Error(), nil)
+	}
+	return response.ResponseJSON(e, 200, "success", nil)
 }

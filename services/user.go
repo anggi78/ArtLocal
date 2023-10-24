@@ -12,6 +12,7 @@ type UserServiceInterface interface {
 	Login(email string, password string) (core.User, string, error)
 	GetAll() ([]core.User, error)
 	Update(userID int, user core.User) (core.User, string, error)
+	Delete(id int) (bool, error)
 }
 
 type userService struct {
@@ -64,4 +65,12 @@ func (u *userService) Update(userID int, user core.User) (core.User, string, err
         return core.User{}, "", err
     }
     return *existingUser, "", nil
+}
+
+func (u *userService) Delete(id int) (bool, error) {
+	users, err := u.repo.Delete(id)
+	if err != nil {
+		return false, err
+	}
+	return users, nil
 }

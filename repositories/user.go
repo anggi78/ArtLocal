@@ -15,6 +15,7 @@ type UserRepoInterface interface {
 	Login(email string, password string) (core.User, error)
 	Update(userID int, user core.User) error
 	FindByID(userID int) (*core.User, error)
+	Delete(id int) (bool, error)
 }
 
 type userRepo struct {
@@ -89,4 +90,19 @@ func (u *userRepo) Update(userID int, user core.User) error {
         return err
     }
     return nil
+}
+
+func (u *userRepo) Delete(id int) (bool, error) {
+	users, err := u.FindByID(id)
+
+	dataUsers := core.FromCoreToUserModel(*users)
+	if err != nil {
+		return false, err
+	}
+
+	err = u.db.Where("id = ?", id).Delete(&dataUsers).Error
+	if err != nil {
+		return false, err
+	}
+	return true, nil
 }
