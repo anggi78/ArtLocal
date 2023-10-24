@@ -11,17 +11,16 @@ import (
 	"gorm.io/gorm"
 )
 
-func ArtworkRoute(app *echo.Echo, db *gorm.DB) {
+func ArtworkRoute(e *echo.Echo, db *gorm.DB) {
 	repo := repositories.NewArtRepositories(db)
 	service := services.NewArtService(repo)
 	handler := handler.NewArtHandler(service) 
 
-	app.GET("/users/art", handler.GetAll)
-
-	e := app.Group("")
-	app.GET("/users/art/:id", handler.GetById)
-	e.Use(echojwt.JWT([]byte(os.Getenv("JWT_SECRET"))))
-	e.POST("/users/art", handler.Create)
-	e.DELETE("/users/art/:id", handler.Delete)
-	e.PUT("/users/art/:id", handler.Update)
+	app := e.Group("")
+	app.Use(echojwt.JWT([]byte(os.Getenv("JWT_SECRET"))))
+	app.POST("/users/art", handler.CreateArt)
+	app.DELETE("/users/art/:id", handler.DeleteArt)
+	app.PUT("/users/art/:id", handler.UpdateArt)
+	app.GET("/users/art/:id", handler.GetByIdArt)
+	app.GET("/users/art", handler.GetAllArt)
 }

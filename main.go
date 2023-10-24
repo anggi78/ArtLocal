@@ -21,6 +21,7 @@ func main() {
 
 	route.UserRoute(app, database.DB)
 	route.AdminRoute(app, database.DB)
+	route.ArtworkRoute(app, database.DB)
 	
 	app.Logger.Fatal(app.Start(fmt.Sprintf(":%d", appConfig.APP_PORT)))
 }

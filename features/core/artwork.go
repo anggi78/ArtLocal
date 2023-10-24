@@ -7,36 +7,37 @@ import (
 )
 
 func ArtworkDataRequestToArtworkCore(request request.ArtworkRequest) ArtworkCore {
-    artworkCore := ArtworkCore{
-        Title:       request.Title,
-        Description: request.Description,
-    }
-    return artworkCore
+	artworkCore := ArtworkCore{
+		Title:       request.Title,
+		Description: request.Description,
+		UserID:      request.UserID,
+	}
+	return artworkCore
 }
 
 func ArtworkCoreToArtworkModel(coreArtwork ArtworkCore) model.Artwork {
-    artworkModel := model.Artwork{
-        Title:       coreArtwork.Title,
-        Description: coreArtwork.Description,
-        UserID: 	 coreArtwork.UserID,
-    }
-    return artworkModel
+	artworkModel := model.Artwork{
+		Title:       coreArtwork.Title,
+		Description: coreArtwork.Description,
+		UserID:      coreArtwork.UserID,
+	}
+	return artworkModel
 }
 
 func ArtworkCoreToArtworkResponse(coreArtwork ArtworkCore) response.ArtworkResponse {
-    artworkResponse := response.ArtworkResponse{
-        Title:       coreArtwork.Title,
-        Description: coreArtwork.Description,
-        UserID: 	 coreArtwork.UserID,
-    }
-    return artworkResponse
+	artworkResponse := response.ArtworkResponse{
+		Title:       coreArtwork.Title,
+		Description: coreArtwork.Description,
+		UserID:      coreArtwork.UserID,
+	}
+	return artworkResponse
 }
 
 func ArtworkModelToArtworkCore(modelArtwork model.Artwork) ArtworkCore {
-    artworkCore := ArtworkCore{
-        Title:       modelArtwork.Title,
-        Description: modelArtwork.Description,
-        UserID: 	 modelArtwork.UserID,
-    }
-    return artworkCore
+	artworkCore := ArtworkCore{
+		Title:       modelArtwork.Title,
+		Description: modelArtwork.Description,
+		UserID:      modelArtwork.UserID,
+	}
+	return artworkCore
 }

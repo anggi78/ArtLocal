@@ -27,5 +27,5 @@ func UserRoute(e *echo.Echo, db *gorm.DB) {
 	app.PUT("/users/:id", handler.Update)
 
 	
-	//app.GET("/users", handler.GetAllUsers)
+	app.GET("/users", handler.GetAllUsers)
 }

@@ -19,7 +19,7 @@ func NewArtHandler(artService services.ArtServiceInterface) *arthandler {
 	return &arthandler{artService}
 }
 
-func (a *arthandler) GetAll(e echo.Context) error {
+func (a *arthandler) GetAllArt(e echo.Context) error {
 	arts, err := a.artService.GetAll()
 	if err != nil {
 		return response.ResponseJSON(e, 500, err.Error(), nil)
@@ -33,13 +33,12 @@ func (a *arthandler) GetAll(e echo.Context) error {
 	return response.ResponseJSON(e, 200, "success", artResponse)
 }
 
-func (a *arthandler) Create(e echo.Context) error {
+func (a *arthandler) CreateArt(e echo.Context) error {
 	artRequest := request.ArtworkRequest{}
 	if err := e.Bind(&artRequest); err != nil {
 		fmt.Println(artRequest)
 		return response.ResponseJSON(e, 400, err.Error(), nil)
 	}
-
 	dataArtwork := core.ArtworkDataRequestToArtworkCore(artRequest)
 	data, err := a.artService.Create(dataArtwork)
 	if err != nil {
@@ -51,42 +50,42 @@ func (a *arthandler) Create(e echo.Context) error {
 	return response.ResponseJSON(e, 200, "success", artResp)
 }
 
-func (a *arthandler) GetById(e echo.Context) error {
+func (a *arthandler) GetByIdArt(e echo.Context) error {
 	idStr := e.Param("id")
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
-    	return response.ResponseJSON(e, 400, "Invalid ID", nil)
+		return response.ResponseJSON(e, 400, "Invalid ID", nil)
 	}
 
 	art, err := a.artService.GetById(uint(id))
 	if err != nil {
-    	return response.ResponseJSON(e, 400, err.Error(), nil)
+		return response.ResponseJSON(e, 400, err.Error(), nil)
 	}
 
 	artResp := core.ArtworkCoreToArtworkResponse(art)
 	return response.ResponseJSON(e, 200, "success", artResp)
 }
 
-func (a *arthandler) Delete(e echo.Context) error {
+func (a *arthandler) DeleteArt(e echo.Context) error {
 	idStr := e.Param("id")
 	id, err := strconv.ParseUint(idStr, 10, 64)
 	if err != nil {
-    	return response.ResponseJSON(e, 400, "Invalid ID", nil)
+		return response.ResponseJSON(e, 400, "Invalid ID", nil)
 	}
 
 	art, err := a.artService.Delete(uint(id))
 	if err != nil {
-    	return response.ResponseJSON(e, 400, err.Error(), nil)
+		return response.ResponseJSON(e, 400, err.Error(), nil)
 	}
 	if !art {
-    	return response.ResponseJSON(e, 400, err.Error(), nil)
+		return response.ResponseJSON(e, 400, err.Error(), nil)
 	}
 	return response.ResponseJSON(e, 200, "success", nil)
 }
 
-func (a *arthandler) Update(e echo.Context) error {
+func (a *arthandler) UpdateArt(e echo.Context) error {
 	idStr := e.Param("id")
-	id , err := strconv.Atoi(idStr)
+	id, err := strconv.Atoi(idStr)
 	if err != nil {
 		return response.ResponseJSON(e, 400, "invalid id", nil)
 	}
