@@ -13,7 +13,7 @@ type EventResponse struct {
 	Date        string `json:"date"`
 	Description string `json:"description"`
 	Location    string `json:"location"`
-	AdminID     uint
+	AdminID     uint   `json:"id"`
 }
 
 type ArtworkResponse struct {

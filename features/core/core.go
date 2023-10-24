@@ -9,6 +9,7 @@ type User struct {
 }
 
 type EventCore struct {
+	ID			uint
 	Title		string
 	Date		string
 	Description	string

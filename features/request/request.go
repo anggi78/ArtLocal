@@ -13,7 +13,7 @@ type EventRequest struct {
 	Date        string `json:"date" form:"date"`
 	Description string `json:"description" form:"description"`
 	Location    string `json:"location" form:"location"`
-	AdminID     uint
+	AdminID     uint	`json:"admin_id"`
 }
 
 type ArtworkRequest struct {
