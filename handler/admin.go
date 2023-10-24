@@ -15,7 +15,24 @@ type adminHandler struct {
 }
 
 func NewAdminHandler(adminService services.AdminServiceInterface) *adminHandler {
-	return &adminHandler{}
+	return &adminHandler{adminService}
+}
+
+func (u *adminHandler) RegisterAdmin(e echo.Context) error {
+    adminReq := request.AdminRequest{}
+    err := e.Bind(&adminReq)
+    if err != nil {
+        return response.ResponseJSON(e, 400, err.Error(), nil)
+    }
+
+    insert := core.FromRequestToAdmin(adminReq)
+    adminData, err := u.adminService.CreateAdmin(insert)
+    if err != nil {
+        return response.ResponseJSON(e, 400, err.Error(), nil)
+    }
+
+    adminResponse := core.FromCoreToAdminResponse(adminData)
+    return response.ResponseJSON(e, 200, "success", adminResponse)
 }
 
 func (u *adminHandler) LoginAdmin(e echo.Context) error {
@@ -91,7 +108,7 @@ func (u *adminHandler) Update(e echo.Context) error {
     }
 
     newAdmins := core.FromRequestToAdmin(newAdmin)
-    updatedUser, _, updateErr := u.adminService.Update(id, newAdmins)
+    updatedUser, _, updateErr := u.adminService.Update(id, &newAdmins)
     if updateErr != nil {
         return response.ResponseJSON(e, 401, updateErr.Error(), nil)
     }

@@ -7,30 +7,30 @@ import (
 )
 
 func FromRequestToAdmin(Req request.AdminRequest) Admin {
-	Admin := Admin{
+	admin := Admin{
 		Name: Req.Name,
 		Email: Req.Email,
 		Password: Req.Password,
 	}
-	return Admin
+	return admin
 }
 
 func FromCoreToAdminModel(core Admin) model.Admin {
-	Admin := model.Admin{
+	admin := model.Admin{
 		Name: core.Name,
 		Email: core.Email,
 		Password: core.Password,
 	}
-	return Admin
+	return admin
 }
 
 func FromModelToAdmin(model model.Admin) Admin {
-	Admin := Admin{
+	admin := Admin{
 		Name: model.Name,
 		Email: model.Email,
 		Password: model.Password,
 	}
-	return Admin
+	return admin
 }
 
 func FromCoreToAdminResponse(Admins Admin) response.AdminResponse {

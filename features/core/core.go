@@ -17,6 +17,7 @@ type EventCore struct {
 }
 
 type ArtworkCore struct {
+	ID			uint
 	Title		string
 	Description	string
 	UserID		uint

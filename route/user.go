@@ -16,12 +16,16 @@ func UserRoute(e *echo.Echo, db *gorm.DB) {
 	service := services.NewUserService(repositories)
 	handler := handler.NewUserHandler(service)
 
+	// user register dan login
 	e.POST("/users/register", handler.Register)
 	e.POST("/users/login", handler.Login)
 
 	app := e.Group("")
 	app.Use(echojwt.JWT([]byte(os.Getenv("JWT_SECRET"))))
 
-	app.GET("/users", handler.GetAllUsers)
+	// user update profil
 	app.PUT("/users/:id", handler.Update)
+
+	
+	//app.GET("/users", handler.GetAllUsers)
 }

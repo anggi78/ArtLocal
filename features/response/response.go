@@ -19,7 +19,7 @@ type EventResponse struct {
 type ArtworkResponse struct {
 	Title       string `json:"title"`
 	Description string `json:"description"`
-	UserID      uint
+	UserID      uint	`json:"id"`
 }
 
 type FollowEventResponse struct {

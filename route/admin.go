@@ -16,11 +16,18 @@ func AdminRoute(e *echo.Echo, db *gorm.DB) {
 	service := services.NewAdminService(repositories)
 	handler := handler.NewAdminHandler(service)
 
+	// admin register dan login
+	e.POST("/admin/register", handler.RegisterAdmin)
 	e.POST("/admin/login", handler.LoginAdmin)
 
-	app := e.Group("")
-	app.Use(echojwt.JWT([]byte(os.Getenv("JWT_SECRET"))))
+	admin := e.Group("")
+	admin.Use(echojwt.JWT([]byte(os.Getenv("JWT_SECRET"))))
 
 	//app.GET("/users", handler.GetAllUsers)
-	app.POST("/event", handler.CreateEvent)
+
+	// update profil admin
+	admin.PUT("/admin/:id", handler.Update)
+
+	// admin buat event
+	admin.POST("/admin/event", handler.CreateEvent)
 }

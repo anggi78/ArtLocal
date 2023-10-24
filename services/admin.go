@@ -4,22 +4,35 @@ import (
 	"art-local/features/core"
 	"art-local/helpers"
 	"art-local/repositories"
+	"fmt"
 	"log"
 )
 
 type AdminServiceInterface interface {
+	CreateAdmin(admin core.Admin) (core.Admin, error)
 	LoginAdmin(email string, password string) (core.Admin,string, error)
 	//GetAll() ([]core.EventCore, error)
 	CreateEvent(event core.EventCore) (core.EventCore, error)
-	Update(AdminID int, admin core.Admin) (core.Admin, string, error)
+	Update(AdminID int, admin *core.Admin) (*core.Admin, string, error)
 }
 
 type adminService struct {
 	repo repositories.AdminRepoInterface
 }
 
-func NewAdminService(repo repositories.AdminRepoInterface) *adminService {
-	return &adminService{}
+func NewAdminService(re repositories.AdminRepoInterface) *adminService {
+	return &adminService{repo: re}
+}
+
+func (u *adminService) CreateAdmin(admin core.Admin) (core.Admin, error) {
+    admin.Password = helpers.HashPassword(admin.Password)
+    admins, err := u.repo.CreateAdmin(admin)
+    if err != nil {
+		fmt.Println(err)
+		log.Println(admins)
+        return admins, err
+    }
+    return admins, nil
 }
 
 func (u *adminService) LoginAdmin(email string, password string) (core.Admin, string, error) {
@@ -28,8 +41,7 @@ func (u *adminService) LoginAdmin(email string, password string) (core.Admin, st
 		return adminData, "", err
 	}
 
-	log.Println("login : ", adminData.Email)
-	token, _ := helpers.GenerateToken(adminData.ID)
+	token, _ := helpers.GenerateTokenAdmin(adminData.ID)
 	if token != "" {
 		log.Printf("Token : %s\n", token)
 	}
@@ -52,19 +64,20 @@ func (u *adminService) CreateEvent(event core.EventCore) (core.EventCore, error)
 	return events, nil
 }
 
-func (u *adminService) Update(AdminID int, admin core.Admin) (core.Admin, string, error) {
-	admin.Password = helpers.HashPassword(admin.Password)
+func (u *adminService) Update(AdminID int, admin *core.Admin) (*core.Admin, string, error) {
+    admin.Password = helpers.HashPassword(admin.Password)
     existingUser, err := u.repo.FindByID(AdminID)
     if err != nil {
-        return core.Admin{}, "", err
+        return &core.Admin{}, "", err
     }
 
     existingUser.Name = admin.Name
     existingUser.Email = admin.Email
-	existingUser.Password = admin.Password
+    existingUser.Password = admin.Password
 
-    if err := u.repo.Update(AdminID, *existingUser); err != nil {
-        return core.Admin{}, "", err
+    updatedUser, updateErr := u.repo.Update(AdminID, existingUser)
+    if updateErr != nil {
+        return &core.Admin{},"", updateErr
     }
-    return *existingUser, "", nil
+    return updatedUser,"", nil
 }

@@ -25,10 +25,11 @@ type Event struct {
 
 type Artwork struct {
 	gorm.Model
+	ID			uint
 	Title       string `gorm:"not null" valid:"required~your title is required" json:"title" form:"title"`
 	Description string `gorm:"not null;unique" valid:"required~your description is required"`
 	//Image
-	UserID uint
+	UserID 		uint
 }
 
 type FollowEvent struct {

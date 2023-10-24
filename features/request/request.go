@@ -17,7 +17,7 @@ type EventRequest struct {
 type ArtworkRequest struct {
 	Title 		string	`json:"title" form:"title"`
 	Description	string	`json:"description" form:"description"`
-	UserID		uint
+	UserID		uint	`json:"user_id"`
 }
 
 type FollowEventRequest struct {
