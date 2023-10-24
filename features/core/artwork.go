@@ -9,6 +9,7 @@ import (
 func ArtworkDataRequestToArtworkCore(request request.ArtworkRequest) ArtworkCore {
 	artworkCore := ArtworkCore{
 		Title:       request.Title,
+		//Image: 		 imageurl,
 		Description: request.Description,
 		UserID:      request.UserID,
 	}
@@ -18,6 +19,7 @@ func ArtworkDataRequestToArtworkCore(request request.ArtworkRequest) ArtworkCore
 func ArtworkCoreToArtworkModel(coreArtwork ArtworkCore) model.Artwork {
 	artworkModel := model.Artwork{
 		Title:       coreArtwork.Title,
+		//Image: 		 coreArtwork.Image,
 		Description: coreArtwork.Description,
 		UserID:      coreArtwork.UserID,
 	}

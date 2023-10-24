@@ -2,6 +2,7 @@ package route
 
 import (
 	"art-local/handler"
+	"art-local/helpers"
 	"art-local/repositories"
 	"art-local/services"
 	"os"
@@ -18,9 +19,16 @@ func ArtworkRoute(e *echo.Echo, db *gorm.DB) {
 
 	app := e.Group("")
 	app.Use(echojwt.JWT([]byte(os.Getenv("JWT_SECRET"))))
-	app.POST("/users/art", handler.CreateArt)
-	app.DELETE("/users/art/:id", handler.DeleteArt)
-	app.PUT("/users/art/:id", handler.UpdateArt)
-	app.GET("/users/art/:id", handler.GetByIdArt)
-	app.GET("/users/art", handler.GetAllArt)
+
+	// user
+	app.POST("/users/art", handler.CreateArt, helpers.AuthMiddleware("user"))
+	app.DELETE("/users/art/:id", handler.DeleteArt, helpers.AuthMiddleware("user"))
+	app.PUT("/users/art/:id", handler.UpdateArt, helpers.AuthMiddleware("user"))
+	app.GET("/users/art/:id", handler.GetByIdArt, helpers.AuthMiddleware("user"))
+	app.GET("/users/art", handler.GetAllArt, helpers.AuthMiddleware("user"))
+
+	// admin
+	app.DELETE("/admin/art/:id", handler.DeleteArt, helpers.AuthMiddleware("admin"))
+	app.GET("/admin/art/:id", handler.GetByIdArt, helpers.AuthMiddleware("admin"))
+	app.GET("/admin/art", handler.GetAllArt, helpers.AuthMiddleware("admin"))
 }

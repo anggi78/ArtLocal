@@ -27,7 +27,7 @@ type Artwork struct {
 	gorm.Model
 	Title       string `gorm:"not null" valid:"required~your title is required" json:"title" form:"title"`
 	Description string `gorm:"not null;unique" valid:"required~your description is required"`
-	//Image
+	//Image       string `gorm:"not null" valid:"required~your image is required" json:"image" form:"image"`
 	UserID 		uint	`gorm:"constraint:OnDelete:CASCADE;"`
 }
 

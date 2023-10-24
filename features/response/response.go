@@ -18,6 +18,7 @@ type EventResponse struct {
 
 type ArtworkResponse struct {
 	Title       string `json:"title"`
+	Image       string    `json:"image"`
 	Description string `json:"description"`
 	UserID      uint	`json:"id"`
 }

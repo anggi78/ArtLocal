@@ -14,6 +14,7 @@ func GenerateToken(userID uint) (string, error) {
 		"sub": userID,
 		"exp": time.Now().Add(time.Hour * 1).Unix(),
 		"iat": time.Now().Unix(),
+		"role": "user",
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -32,6 +33,7 @@ func GenerateTokenAdmin(AdminID uint) (string, error) {
         "sub":   AdminID,
         "exp":   time.Now().Add(time.Hour * 1).Unix(),
         "iat":   time.Now().Unix(),
+		"role": "admin",
     }
 
     token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
