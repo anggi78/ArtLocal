@@ -13,14 +13,13 @@ type EventResponse struct {
 	Date        string `json:"date"`
 	Description string `json:"description"`
 	Location    string `json:"location"`
-	AdminID     uint   `json:"id"`
 }
 
 type ArtworkResponse struct {
 	Title       string `json:"title"`
 	Image       string    `json:"image"`
 	Description string `json:"description"`
-	UserID      uint	`json:"id"`
+	UserID      uint	`json:"user_id"`
 }
 
 type FollowEventResponse struct {

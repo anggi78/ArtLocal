@@ -14,7 +14,6 @@ type EventCore struct {
 	Date		string
 	Description	string
 	Location	string
-	AdminID		uint
 }
 
 type ArtworkCore struct {

@@ -2,16 +2,16 @@ package core
 
 import (
 	"art-local/features/model"
-	"art-local/features/request"
+	//"art-local/features/request"
 	"art-local/features/response"
 )
 
-func EventRequestToFollowEventCore(follow request.EventRequest) FollowEventCore {
-	dataFollowEvent := FollowEventCore {
-		UserID: follow.AdminID,
-	}
-	return dataFollowEvent
-}
+// func EventRequestToFollowEventCore(follow request.EventRequest) FollowEventCore {
+// 	dataFollowEvent := FollowEventCore {
+// 		UserID: follow.AdminID,
+// 	}
+// 	return dataFollowEvent
+// }
 
 func FollowEventCoreToModelFollowEvent(follow FollowEventCore) model.FollowEvent {
 	dataFollow := model.FollowEvent {

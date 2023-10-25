@@ -12,7 +12,7 @@ type ArtworkRepoInterface interface {
 	GetById(id uint) (core.ArtworkCore, error)
 	Create(art core.ArtworkCore) (core.ArtworkCore, error)
 	Delete(id uint) (bool, error)
-	Update(id uint, updateArt core.ArtworkCore) (core.ArtworkCore, error)
+	Update(id uint, updateArt core.ArtworkCore) error
 }
 
 type ArtRepositories struct {
@@ -78,18 +78,18 @@ func (a *ArtRepositories) Delete(id uint) (bool, error) {
 	return true, nil
 }
 
-func (a *ArtRepositories) Update(id uint, updateArt core.ArtworkCore) (core.ArtworkCore, error) {
-	art := core.ArtworkCoreToArtworkModel(updateArt)
-	data, err := a.GetById(id)
-	if err != nil {
-		return data, err
+func (a *ArtRepositories) Update(id uint, updateArt core.ArtworkCore) error {
+	var art model.Artwork
+
+	if err := a.db.First(&art, id).Error; err != nil {
+		return err
 	}
 
-	err = a.db.Where("id = ?", id).Updates(&art).Error
-	if err != nil {
-		return data, err
-	}
+	art.Title 		= updateArt.Title
+	art.Description 	= updateArt.Description
 
-	data.ID = id
-	return data, nil
+	if err := a.db.Save(&art).Error; err != nil {
+		return err
+	}
+	return nil
 }

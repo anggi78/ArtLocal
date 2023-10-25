@@ -92,9 +92,9 @@ func (ev *eventHandler) UpdateEvent(e echo.Context) error {
 	if err != nil {
 		return response.ResponseJSON(e, 400, err.Error(), nil)
 	}
-	newEvents := core.EventRequestToEventCore(newEvent)
 
-	dataEvent, err := ev.eventService.Update(uint(id), newEvents)
+	newEvents := core.EventRequestToEventCore(newEvent)
+	dataEvent,_, err := ev.eventService.Update(uint(id), newEvents)
 	if err != nil {
 		return response.ResponseJSON(e, 400, err.Error(), nil)
 	}

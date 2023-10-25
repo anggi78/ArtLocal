@@ -18,7 +18,6 @@ type Admin struct {
 	Name         string `gorm:"not null" valid:"required~your name is required"`
 	Email        string `gorm:"not null;unique" valid:"required~your email is required, email~invalid email format"`
 	Password     string `gorm:"not null"`	
-	Event []Event
 }
 
 type Event struct {
@@ -27,7 +26,6 @@ type Event struct {
 	Date         string `gorm:"not null" valid:"required~your date  is required"`
 	Description  string `gorm:"not null;unique" valid:"required~your description is required"`
 	Location     string `gorm:"not null" valid:"required~your location is required"`
-	AdminID      uint	`gorm:"constraint:OnDelete:CASCADE;"`
 	Follow_event []FollowEvent
 }
 

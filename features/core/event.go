@@ -13,7 +13,6 @@ func EventCoreToEventModel(event EventCore) model.Event {
 		Date: event.Date,
 		Description: event.Description,
 		Location: event.Location,
-		AdminID: event.AdminID,
 	}
 
 	// for _, v := range event.FollowEvent {
@@ -29,7 +28,6 @@ func EventModelToEventCore(event model.Event) EventCore {
 		Date: event.Date,
 		Description: event.Description,
 		Location: event.Location,
-		AdminID: event.AdminID,
 	}
 	return dataEvent
 }
@@ -40,7 +38,6 @@ func EventCoreToEventRespon(event EventCore) response.EventResponse {
 		Date: event.Date,
 		Description: event.Description,
 		Location: event.Location,
-		AdminID: event.AdminID,
 	}
 	return dataEvent
 }
@@ -51,7 +48,6 @@ func EventRequestToEventCore(event request.EventRequest) EventCore {
 		Date: event.Date,
 		Description: event.Description,
 		Location: event.Location,
-		AdminID: event.AdminID,
 	}
 	return dataEvent
 }

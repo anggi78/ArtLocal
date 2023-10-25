@@ -82,9 +82,9 @@ func (u *userRepo) Update(userID int, user core.User) error {
         return err
     }
 
-    existingUser.Name = user.Name
-    existingUser.Email = user.Email
-    existingUser.Password = user.Password
+    existingUser.Name 		= user.Name
+    existingUser.Email 		= user.Email
+    existingUser.Password 	= user.Password
 
     if err := u.db.Save(&existingUser).Error; err != nil {
         return err

@@ -10,7 +10,7 @@ type EventServiceInterface interface {
 	GetById(id uint) (core.EventCore, error)
 	Create(event core.EventCore) (core.EventCore, error)
 	Delete(id uint) (bool, error)
-	Update(id uint, updateEvent core.EventCore) (core.EventCore, error)
+	Update(id uint, updateEvent core.EventCore) (core.EventCore, string, error)
 }
 
 type eventService struct {
@@ -53,10 +53,19 @@ func (e *eventService) Delete(id uint) (bool, error) {
 	return events, nil
 }
 
-func (e *eventService) Update(id uint, updateEvent core.EventCore) (core.EventCore, error) {
-	events, err := e.eventRepo.Update(id, updateEvent)
+func (e *eventService) Update(id uint, updateEvent core.EventCore) (core.EventCore, string, error) {
+	existingEvent, err := e.eventRepo.GetById(id)
 	if err != nil {
-		return events, err
+		return core.EventCore{}, "", err
 	}
-	return events, nil
+
+	existingEvent.Title 		= updateEvent.Title
+	existingEvent.Date 			= updateEvent.Date
+	existingEvent.Description 	= updateEvent.Description
+	existingEvent.Location 		= updateEvent.Location
+
+	if err := e.eventRepo.Update(id, existingEvent); err != nil {
+		return core.EventCore{}, "", err
+	}
+	return existingEvent, "", nil
 }

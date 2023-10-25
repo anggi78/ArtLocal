@@ -12,7 +12,7 @@ type EventRepoInterface interface {
 	GetById(id uint) (core.EventCore, error)
 	Create(event core.EventCore) (core.EventCore, error)
 	Delete(id uint) (bool, error)
-	Update(id uint, updateEvent core.EventCore) (core.EventCore, error)
+	Update(id uint, updateEvent core.EventCore) error
 }
 
 type EventRepo struct {
@@ -78,18 +78,20 @@ func (e *EventRepo) Delete(id uint) (bool, error) {
 	return true, nil
 }
 
-func (e *EventRepo) Update(id uint, updateEvent core.EventCore) (core.EventCore, error) {
-	event := core.EventCoreToEventModel(updateEvent)
-	data, err := e.GetById(id)
-	if err != nil {
-		return data, err
+func (e *EventRepo) Update(id uint, updateEvent core.EventCore) error {
+	var event model.Event
+
+	if err := e.db.First(&event, id).Error; err != nil {
+		return err
 	}
 
-	err = e.db.Where("id = ?", id).Updates(&event).Error
-	if err != nil {
-		return data, err
-	}
+	event.Title 		= updateEvent.Title
+	event.Date 			= updateEvent.Date
+	event.Description 	= updateEvent.Description
+	event.Location 		= updateEvent.Location
 
-	data.ID = id
-	return data, nil
+	if err := e.db.Save(&event).Error; err != nil {
+		return err
+	}
+	return nil
 }

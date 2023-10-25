@@ -97,7 +97,7 @@ func (a *arthandler) UpdateArt(e echo.Context) error {
 	}
 	newArtworks := core.ArtworkDataRequestToArtworkCore(newArtwork)
 
-	dataArt, err := a.artService.Update(uint(id), newArtworks)
+	dataArt, _, err := a.artService.Update(uint(id), newArtworks)
 	if err != nil {
 		return response.ResponseJSON(e, 400, err.Error(), nil)
 	}

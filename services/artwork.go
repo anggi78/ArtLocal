@@ -10,7 +10,7 @@ type ArtServiceInterface interface {
 	GetById(id uint) (core.ArtworkCore, error)
 	Create(art core.ArtworkCore) (core.ArtworkCore, error)
 	Delete(id uint) (bool, error)
-	Update(id uint, updateArt core.ArtworkCore) (core.ArtworkCore, error)
+	Update(id uint, updateArt core.ArtworkCore) (core.ArtworkCore,string, error)
 }
 
 type artService struct {
@@ -53,10 +53,17 @@ func (a *artService) Delete(id uint) (bool, error) {
 	return arts, nil
 }
 
-func (a *artService) Update(id uint, updateArt core.ArtworkCore) (core.ArtworkCore, error) {
-	arts, err := a.artRepo.Update(id, updateArt)
+func (a *artService) Update(id uint, updateArt core.ArtworkCore) (core.ArtworkCore, string, error) {
+	existingArt, err := a.artRepo.GetById(id)
 	if err != nil {
-		return arts, err
+		return core.ArtworkCore{}, "", err
 	}
-	return arts, nil
+
+	existingArt.Title 		= updateArt.Title
+	existingArt.Description 	= updateArt.Description
+
+	if err := a.artRepo.Update(id, existingArt); err != nil {
+		return core.ArtworkCore{}, "", err
+	}
+	return existingArt, "", nil
 }
