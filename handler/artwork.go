@@ -4,6 +4,7 @@ import (
 	"art-local/features/core"
 	"art-local/features/request"
 	"art-local/features/response"
+	"art-local/helpers"
 	"art-local/services"
 	"fmt"
 	"strconv"
@@ -27,7 +28,7 @@ func (a *arthandler) GetAllArt(e echo.Context) error {
 
 	artResponse := []response.ArtworkResponse{}
 	for _, v := range arts {
-		art := core.ArtworkCoreToArtworkResponse(v)
+		art := core.ArtworkCoreToArtworkResponse(v, v.ID)
 		artResponse = append(artResponse, art)
 	}
 	return response.ResponseJSON(e, 200, "success", artResponse)
@@ -39,14 +40,21 @@ func (a *arthandler) CreateArt(e echo.Context) error {
 		fmt.Println(artRequest)
 		return response.ResponseJSON(e, 400, err.Error(), nil)
 	}
-	dataArtwork := core.ArtworkDataRequestToArtworkCore(artRequest)
-	data, err := a.artService.Create(dataArtwork)
+
+	file, err := e.FormFile("image")
 	if err != nil {
-		fmt.Println(dataArtwork)
+		return e.JSON(400, "Failed to receive file")
+	}
+
+	client := helpers.ConfigCloud()
+	imageurl := helpers.UploadFile(file, client)
+	dataArt := core.ArtworkDataRequestToArtworkCore(artRequest, imageurl)
+	data, err := a.artService.Create(dataArt)
+	if err != nil {
 		return response.ResponseJSON(e, 500, err.Error(), nil)
 	}
 
-	artResp := core.ArtworkCoreToArtworkResponse(data)
+	artResp := core.ArtworkCoreToArtworkResponse(data, data.ID)
 	return response.ResponseJSON(e, 200, "success", artResp)
 }
 
@@ -62,7 +70,7 @@ func (a *arthandler) GetByIdArt(e echo.Context) error {
 		return response.ResponseJSON(e, 400, err.Error(), nil)
 	}
 
-	artResp := core.ArtworkCoreToArtworkResponse(art)
+	artResp := core.ArtworkCoreToArtworkResponse(art, art.ID)
 	return response.ResponseJSON(e, 200, "success", artResp)
 }
 
@@ -84,24 +92,34 @@ func (a *arthandler) DeleteArt(e echo.Context) error {
 }
 
 func (a *arthandler) UpdateArt(e echo.Context) error {
-	idStr := e.Param("id")
-	id, err := strconv.Atoi(idStr)
-	if err != nil {
-		return response.ResponseJSON(e, 400, "invalid id", nil)
-	}
+    idStr := e.Param("id")
+    id, err := strconv.Atoi(idStr)
+    if err != nil {
+        return response.ResponseJSON(e, 400, "Invalid ID", nil)
+    }
 
-	newArtwork := request.ArtworkRequest{}
-	err = e.Bind(&newArtwork)
-	if err != nil {
-		return response.ResponseJSON(e, 400, err.Error(), nil)
-	}
-	newArtworks := core.ArtworkDataRequestToArtworkCore(newArtwork)
+    newArt := request.ArtworkRequest{}
 
-	dataArt, _, err := a.artService.Update(uint(id), newArtworks)
-	if err != nil {
-		return response.ResponseJSON(e, 400, err.Error(), nil)
-	}
+    err = e.Bind(&newArt)
+    if err != nil {
+        return response.ResponseJSON(e, 400, err.Error(), nil)
+    }
 
-	artRespon := core.ArtworkCoreToArtworkResponse(dataArt)
-	return response.ResponseJSON(e, 200, "succes", artRespon)
+    file, err := e.FormFile("image")
+    if err != nil {
+        return e.JSON(400, "Failed to receive file")
+    }
+
+    client := helpers.ConfigCloud()
+    imageurl := helpers.UploadFile(file, client)
+
+    NewArt := core.ArtworkDataRequestToArtworkCore(newArt, imageurl)
+    dataArt, err := a.artService.Update(uint(id), NewArt)
+    if err != nil {
+        return response.ResponseJSON(e, 400, err.Error(), nil)
+    }
+    dataArt.Image = imageurl
+    artRespon := core.ArtworkCoreToArtworkResponse(dataArt, dataArt.ID)
+    return response.ResponseJSON(e, 200, "success", artRespon)
 }
+

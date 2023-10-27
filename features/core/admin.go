@@ -17,6 +17,7 @@ func FromRequestToAdmin(Req request.AdminRequest) Admin {
 
 func FromCoreToAdminModel(core Admin) model.Admin {
 	admin := model.Admin{
+		ID: core.ID,
 		Name: core.Name,
 		Email: core.Email,
 		Password: core.Password,
@@ -26,6 +27,7 @@ func FromCoreToAdminModel(core Admin) model.Admin {
 
 func FromModelToAdmin(model model.Admin) Admin {
 	admin := Admin{
+		ID: model.ID,
 		Name: model.Name,
 		Email: model.Email,
 		Password: model.Password,
@@ -35,6 +37,7 @@ func FromModelToAdmin(model model.Admin) Admin {
 
 func FromCoreToAdminResponse(Admins Admin) response.AdminResponse {
 	Admin := response.AdminResponse{
+		ID: Admins.ID,
 		Name: Admins.Name,
 		Email: Admins.Email,
 	}

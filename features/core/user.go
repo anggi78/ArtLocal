@@ -17,26 +17,27 @@ func FromRequestToUser(Req request.UserRequest) User {
 
 func FromCoreToUserModel(core User) model.User {
 	user := model.User{
+		ID: uint(core.ID),
 		Name: core.Name,
 		Email: core.Email,
 		Password: core.Password,
-		Role: core.Role,
 	}
 	return user
 }
 
 func FromModelToUser(model model.User) User {
 	user := User{
+		ID: model.ID,
 		Name: model.Name,
 		Email: model.Email,
 		Password: model.Password,
-		Role: model.Role,
 	}
 	return user
 }
 
-func FromCoreToUserResponse(users User) response.UserResponse {
+func FromCoreToUserResponse(users User, ID uint) response.UserResponse {
 	user := response.UserResponse{
+		ID: users.ID,
 		Name: users.Name,
 		Email: users.Email,
 	}

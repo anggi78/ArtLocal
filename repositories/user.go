@@ -13,9 +13,9 @@ type UserRepoInterface interface {
 	GetAll() ([]core.User, error)
 	CreateUser(core.User) (core.User, error)
 	Login(email string, password string) (core.User, error)
-	Update(userID int, user core.User) error
-	FindByID(userID int) (*core.User, error)
-	Delete(id int) (bool, error)
+	Update(ID uint, user core.User) error
+	FindByID(ID uint) (*core.User, error)
+	Delete(ID uint) (bool, error)
 }
 
 type userRepo struct {
@@ -65,20 +65,20 @@ func (u *userRepo) Login(email string, password string) (core.User, error) {
 	return data, nil
 }
 
-func (u *userRepo) FindByID(userID int) (*core.User, error) {
+func (u *userRepo) FindByID(ID uint) (*core.User, error) {
 	user := core.User{}
 
-	result := u.db.First(&user, userID)
+	result := u.db.First(&user, ID)
 	if result.Error != nil {
 		return nil, result.Error
 	}
 	return &user, nil
 }
 
-func (u *userRepo) Update(userID int, user core.User) error {
+func (u *userRepo) Update(ID uint, user core.User) error {
     var existingUser model.User
 
-    if err := u.db.First(&existingUser, userID).Error; err != nil {
+    if err := u.db.First(&existingUser, ID).Error; err != nil {
         return err
     }
 
@@ -92,15 +92,15 @@ func (u *userRepo) Update(userID int, user core.User) error {
     return nil
 }
 
-func (u *userRepo) Delete(id int) (bool, error) {
-	users, err := u.FindByID(id)
+func (u *userRepo) Delete(ID uint) (bool, error) {
+	users, err := u.FindByID(ID)
 
 	dataUsers := core.FromCoreToUserModel(*users)
 	if err != nil {
 		return false, err
 	}
 
-	err = u.db.Where("id = ?", id).Delete(&dataUsers).Error
+	err = u.db.Where("id = ?", ID).Delete(&dataUsers).Error
 	if err != nil {
 		return false, err
 	}

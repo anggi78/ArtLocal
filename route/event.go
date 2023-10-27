@@ -33,4 +33,8 @@ func EventRoute(e *echo.Echo, db *gorm.DB) {
 	app.POST("/users/event", handler.CreateEvent, helpers.AuthMiddleware("user"))
 	app.DELETE("/users/event/:id", handler.DeleteEvent, helpers.AuthMiddleware("user"))
 	app.PUT("/users/event/:id", handler.UpdateEvent, helpers.AuthMiddleware("user"))
+
+	// user follow event
+	app.GET("users/follow",  handler.GetAllUserEvent, helpers.AuthMiddleware("user"))
+	app.POST("users/follow",  handler.CreateFollowEvent, helpers.AuthMiddleware("user"))
 }

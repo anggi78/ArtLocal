@@ -17,14 +17,14 @@ type EventRequest struct {
 
 type ArtworkRequest struct {
 	Title       string                `json:"title" form:"title"`
-	//Image       *multipart.FileHeader `json:"image" form:"image"`
+	Image       string 				  `json:"image" form:"image"`
 	Description string                `json:"description" form:"description"`
-	UserID      uint                  `json:"user_id"`
+	UserID      uint                  `json:"user_id" form:"user_id"`
 }
 
 type FollowEventRequest struct {
-	UserID  uint
-	EventID uint
+	UserID  uint `json:"user_id" form:"user_id"`
+	EventID uint `json:"event_id" form:"event_id"`
 }
 
 type AdminRequest struct {

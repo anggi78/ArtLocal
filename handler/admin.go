@@ -90,7 +90,7 @@ func (u *adminHandler) CreateEvent(e echo.Context) error {
 		return response.ResponseJSON(e, 400, err.Error(), nil)
 	}
 
-	respon := core.EventCoreToEventRespon(adminData)
+	respon := core.EventCoreToEventRespon(adminData, uint(adminData.ID))
 	return response.ResponseJSON(e, 200, "success", respon)
 }
 

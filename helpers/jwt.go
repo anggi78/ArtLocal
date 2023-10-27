@@ -5,13 +5,14 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/labstack/echo/v4"
 )
 
 func GenerateToken(userID uint) (string, error) {
 	jwtSecret := []byte(os.Getenv("JWT_SECRET"))
 
 	claims := jwt.MapClaims{
-		"sub": userID,
+		"id": userID,
 		"exp": time.Now().Add(time.Hour * 1).Unix(),
 		"iat": time.Now().Unix(),
 		"role": "user",
@@ -30,7 +31,7 @@ func GenerateTokenAdmin(AdminID uint) (string, error) {
     jwtSecret := []byte(os.Getenv("JWT_SECRET"))
 
     claims := jwt.MapClaims{
-        "sub":   AdminID,
+        "id":   AdminID,
         "exp":   time.Now().Add(time.Hour * 1).Unix(),
         "iat":   time.Now().Unix(),
 		"role": "admin",
@@ -43,4 +44,14 @@ func GenerateTokenAdmin(AdminID uint) (string, error) {
     }
 
     return tokenString, nil
+}
+
+func ExtractTokenUserId(e echo.Context) float64 {
+	user := e.Get("user").(*jwt.Token)
+	if user.Valid {
+		claims := user.Claims.(jwt.MapClaims)
+		UserId := claims["id"].(float64)
+		return UserId
+	}
+	return 0
 }

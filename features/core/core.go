@@ -5,7 +5,6 @@ type User struct {
 	Name		string
 	Email		string
 	Password	string
-	Role		string
 }
 
 type EventCore struct {
@@ -14,6 +13,17 @@ type EventCore struct {
 	Date		string
 	Description	string
 	Location	string
+	FollowEvent []FollowEventCore
+}
+
+type EventAll struct {
+	ID			uint
+	Name		string	`json:"name"`
+	EventID     uint	`json:"event_id"`
+	Title		string	`json:"title"`
+	Date		string	`json:"date"`
+	Description	string	`json:"description"`
+	Location	string	`json:"location"`
 }
 
 type ArtworkCore struct {
@@ -25,6 +35,7 @@ type ArtworkCore struct {
 }
 
 type FollowEventCore struct {
+	ID uint
 	UserID 	uint
 	EventID uint
 }

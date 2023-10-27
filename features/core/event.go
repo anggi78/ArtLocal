@@ -9,21 +9,23 @@ import (
 
 func EventCoreToEventModel(event EventCore) model.Event {
 	dataEvent := model.Event {
+		ID: event.ID,
 		Title: event.Title,
 		Date: event.Date,
 		Description: event.Description,
 		Location: event.Location,
 	}
 
-	// for _, v := range event.FollowEvent {
-	// 	data := FollowEventCoreToModelFollowEvent(v)
-	// 	dataEvent.Follow_event = append(dataEvent.Follow_event, data)
-	// }
+	for _, v := range event.FollowEvent {
+		data := FollowEventCoreToModelFollowEvent(v)
+		dataEvent.FollowEvent = append(dataEvent.FollowEvent, data)
+	}
 	return dataEvent
 }
 
 func EventModelToEventCore(event model.Event) EventCore {
 	dataEvent := EventCore {
+		ID: event.ID,
 		Title: event.Title,
 		Date: event.Date,
 		Description: event.Description,
@@ -32,8 +34,9 @@ func EventModelToEventCore(event model.Event) EventCore {
 	return dataEvent
 }
 
-func EventCoreToEventRespon(event EventCore) response.EventResponse {
+func EventCoreToEventRespon(event EventCore, ID uint) response.EventResponse {
 	dataEvent := response.EventResponse {
+		ID: uint(event.ID),
 		Title: event.Title,
 		Date: event.Date,
 		Description: event.Description,
@@ -50,4 +53,15 @@ func EventRequestToEventCore(event request.EventRequest) EventCore {
 		Location: event.Location,
 	}
 	return dataEvent
+}
+
+func EventCoreToEventAll(event EventCore) EventAll {
+	allEvent := EventAll {
+		ID: event.ID,
+		Name:		"",
+		Title:		event.Title,
+		Description: event.Description,
+		Date: 		 event.Date,
+	}
+	return allEvent
 }

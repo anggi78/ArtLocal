@@ -31,7 +31,7 @@ func (u *userHandler) RegisterUsers(e echo.Context) error {
 		return response.ResponseJSON(e, 400, err.Error(), nil)
 	}
 
-	respon := core.FromCoreToUserResponse(userData)
+	respon := core.FromCoreToUserResponse(userData, userData.ID)
 	return response.ResponseJSON(e, 200, "success", respon)
 }
 
@@ -50,7 +50,7 @@ func (u *userHandler) LoginUsers(e echo.Context) error {
 		return response.ResponseJSON(e, 401, err.Error(), nil)
 	}
 
-	respon := core.FromCoreToUserResponse(userData)
+	respon := core.FromCoreToUserResponse(userData, userData.ID)
 	return e.JSON(200, echo.Map{
 		"message": "success",
 		"data": respon,
@@ -67,6 +67,7 @@ func (u *userHandler) GetAllUsers(e echo.Context) error {
 	respon := []response.UserResponse{}
 	for _, user := range users {
 		userRes := response.UserResponse{
+			ID: user.ID,
 			Name: user.Name,
 			Email: user.Email,
 		}
@@ -89,7 +90,7 @@ func (u *userHandler) UpdateUsers(e echo.Context) error {
     }
 
     newUsers := core.FromRequestToUser(newUser)
-    updatedUser, _, updateErr := u.userService.Update(id, newUsers)
+    updatedUser, _, updateErr := u.userService.Update(uint(id), newUsers)
     if updateErr != nil {
         return response.ResponseJSON(e, 401, updateErr.Error(), nil)
     }
@@ -103,7 +104,7 @@ func (u *userHandler) DeleteUsers(e echo.Context) error {
 		return response.ResponseJSON(e, 400, "Invalid ID", nil)
 	}
 
-	user, err := u.userService.Delete(int(id))
+	user, err := u.userService.Delete(uint(id))
 	if err != nil {
 		return response.ResponseJSON(e, 400, err.Error(), nil)
 	}

@@ -4,15 +4,14 @@ import (
 	"art-local/features/core"
 	"art-local/helpers"
 	"art-local/repositories"
-	"log"
 )
 
 type UserServiceInterface interface {
 	CreateUser(user core.User) (core.User, error)
 	Login(email string, password string) (core.User, string, error)
 	GetAll() ([]core.User, error)
-	Update(userID int, user core.User) (core.User, string, error)
-	Delete(id int) (bool, error)
+	Update(ID uint, user core.User) (core.User, string, error)
+	Delete(ID uint) (bool, error)
 }
 
 type userService struct {
@@ -37,8 +36,7 @@ func (s *userService) Login(email string, password string) (core.User, string, e
 	if err != nil {
 		return userData, "", err
 	}
-	log.Println("role in login service : ", userData.Role)
-	token, _ := helpers.GenerateToken(userData.ID)
+	token, _ := helpers.GenerateToken(uint(userData.ID))
 	return userData, token, nil
 }
 
@@ -50,9 +48,9 @@ func (u *userService) GetAll() ([]core.User, error) {
 	return users, nil
 }
 
-func (u *userService) Update(userID int, user core.User) (core.User, string, error) {
+func (u *userService) Update(ID uint, user core.User) (core.User, string, error) {
 	user.Password = helpers.HashPassword(user.Password)
-    existingUser, err := u.repo.FindByID(userID)
+    existingUser, err := u.repo.FindByID(ID)
     if err != nil {
         return core.User{}, "", err
     }
@@ -61,14 +59,14 @@ func (u *userService) Update(userID int, user core.User) (core.User, string, err
     existingUser.Email = user.Email
 	existingUser.Password = user.Password
 
-    if err := u.repo.Update(userID, *existingUser); err != nil {
+    if err := u.repo.Update(ID, *existingUser); err != nil {
         return core.User{}, "", err
     }
     return *existingUser, "", nil
 }
 
-func (u *userService) Delete(id int) (bool, error) {
-	users, err := u.repo.Delete(id)
+func (u *userService) Delete(ID uint) (bool, error) {
+	users, err := u.repo.Delete(ID)
 	if err != nil {
 		return false, err
 	}

@@ -41,7 +41,7 @@ func (u *adminService) LoginAdmin(email string, password string) (core.Admin, st
 		return adminData, "", err
 	}
 
-	token, _ := helpers.GenerateTokenAdmin(adminData.ID)
+	token, _ := helpers.GenerateTokenAdmin(uint(adminData.ID))
 	if token != "" {
 		log.Printf("Token : %s\n", token)
 	}
