@@ -195,10 +195,3 @@ func (e *EventRepo) CreateFollow(event core.FollowEventCore, UserID uint) (core.
 	result := core.FollowEventModeltoFollowEventCore(eventInput)
 	return result, nil
 }
-
-// func  (e *EventRepo) CombineEventAndUser(event response.EventResponse, user response.UserResponse) response.UserEventResponse {
-//     return response.UserEventResponse{
-//         Event: event,
-//         User:  user,
-//     }
-// }

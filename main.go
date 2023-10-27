@@ -3,7 +3,7 @@ package main
 import (
 	"art-local/app/config"
 	"art-local/app/database"
-	"art-local/route"
+	"art-local/app/route"
 	"fmt"
 
 	"github.com/labstack/echo/v4"

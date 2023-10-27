@@ -32,3 +32,8 @@ type AdminRequest struct {
 	Email    string `json:"email" form:"email"`
 	Password string `json:"password" form:"password"`
 }
+
+type AskAboutEvent struct {
+	Category	string	`json:"category"`
+	Location	string	`json:"location"`
+}
