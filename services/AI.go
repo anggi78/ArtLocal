@@ -6,28 +6,28 @@ import (
 	"github.com/sashabaranov/go-openai"
 )
 
-type evtRecService struct {}
+type eventReccomService struct {}
 
-type EvtInterface interface {
-	Reccomend(userInput, category, location, openAIKey string) (string, error)
+type EventReccomInterface interface {
+	EventReccomend(userInput, category, location, openAIKey string) (string, error)
 }
 
-func NewReccomEvent() EvtInterface {
-	return &evtRecService{}
+func NewReccomEvent() EventReccomInterface {
+	return &eventReccomService{}
 }
 
-func (s *evtRecService) Reccomend(userInput, category, location, openAIKey string) (string, error) {
+func (s *eventReccomService) EventReccomend(userInput, category, location, openAIKey string) (string, error) {
 	ctx := context.Background()
 	client := openai.NewClient(openAIKey)
 	model := openai.GPT3Dot5Turbo
 	messages := []openai.ChatCompletionMessage{
 		{
-			Role: openai.ChatMessageRoleSystem,
-			Content: "Halo, saya Artlo akan membantu mu menemukan event apa yang ingin kamu cari",
+			Role: 		openai.ChatMessageRoleSystem,
+			Content: 	"Halo, saya Artlo akan membantu mu menemukan event apa yang ingin kamu cari",
 		},
 		{
-			Role: openai.ChatMessageRoleUser,
-			Content: userInput,
+			Role: 		openai.ChatMessageRoleUser,
+			Content: 	userInput,
 		},
 	}
 
@@ -39,7 +39,7 @@ func (s *evtRecService) Reccomend(userInput, category, location, openAIKey strin
 	return answer, nil
 }
 
-func (s *evtRecService) getCompletionFromMessages (
+func (s *eventReccomService) getCompletionFromMessages (
 	ctx context.Context,
 	client *openai.Client,
 	messages []openai.ChatCompletionMessage,

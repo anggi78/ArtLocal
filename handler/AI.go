@@ -11,10 +11,10 @@ import (
 )
 
 type evtHandler struct {
-	evtRecService services.EvtInterface
+	evtRecService services.EventReccomInterface
 }
 
-func NewEventRecc(evtRecService services.EvtInterface) *evtHandler {
+func NewEventRecc(evtRecService services.EventReccomInterface) *evtHandler {
 	return &evtHandler{evtRecService}
 }
 
@@ -26,7 +26,7 @@ func (h *evtHandler) Reccomend(e echo.Context) error {
 	}
 
 	userInput := fmt.Sprintf("Event ini masuk dalam kategori %s dan akan berlangsung di %s. Dengan tingkat popularitas yang populer, acara ini tidak boleh Anda lewatkan!",  req.Category, req.Location)
-	answer, err := h.evtRecService.Reccomend(userInput, req.Category, req.Location, os.Getenv("OPEN_AI_KEY"))
+	answer, err := h.evtRecService.EventReccomend(userInput, req.Category, req.Location, os.Getenv("OPEN_AI_KEY"))
 	if err != nil {
 		return response.ResponseJSON(e, 500, err.Error(), nil)
 	}

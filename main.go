@@ -23,7 +23,7 @@ func main() {
 	route.AdminRoute(app, database.DB)
 	route.ArtworkRoute(app, database.DB)
 	route.EventRoute(app, database.DB)
-	//route.FollowRoute(app, database.DB)
+	route.AIReccRoute(app)
 	
 	app.Logger.Fatal(app.Start(fmt.Sprintf(":%d", appConfig.APP_PORT)))
 }

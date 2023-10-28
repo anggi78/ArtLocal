@@ -17,5 +17,5 @@ func AIReccRoute(e *echo.Echo) {
 	app := e.Group("")
 	app.Use(echojwt.JWT([]byte(os.Getenv("JWT_SECRET"))))
 
-	app.POST("/ask-about-event", evtHandler.Reccomend, helpers.AuthMiddleware("user"))
+	app.POST("/users/ask-about-event", evtHandler.Reccomend, helpers.AuthMiddleware("user"))
 }
