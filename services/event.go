@@ -41,15 +41,6 @@ func (e *eventService) GetAllFollowEvent(UserID uint) ([]core.EventCore, error) 
 	return event, nil
 }
 
-func (e *eventService) GetById(id uint) (core.EventCore, string, error) {
-	events, err := e.eventRepo.GetById(id)
-	if err != nil {
-		return events, "", err
-	}
-	name := e.eventRepo.FindName(events.ID)
-	return events, name, nil
-}
-
 func (e *eventService) GetByIdFollowEvent(EventID uint) (core.FollowEventCore, error) {
 	events, err := e.eventRepo.GetByIdFollowEvent(EventID)
 	if err != nil {
@@ -96,6 +87,15 @@ func (e *eventService) FindEventsFollow(UserID uint) []core.EventCore {
 		events = append(events,dataEvent)
 	}
 	return events
+}
+
+func (e *eventService) GetById(id uint) (core.EventCore, string, error) {
+	events, err := e.eventRepo.GetById(id)
+	if err != nil {
+		return events, "", err
+	}
+	name := e.eventRepo.FindName(events.ID)
+	return events, name, nil
 }
 
 func (e *eventService) CreateFollow(event core.FollowEventCore, UserID uint) (core.FollowEventCore, error) {

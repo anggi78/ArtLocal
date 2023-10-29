@@ -335,83 +335,72 @@ func TestFindEventsFollow_Success(t *testing.T) {
     mockEventRepo := mocks.NewMockEventRepoInterface(ctrl)
     eventService := NewEventService(mockEventRepo)
 
-    userID := uint(1)
-    expectedEvents := []core.EventCore{
-		{ID: 1, Title: "Event 1", Date: "07-05-2023", Description: "events", Location: "Gorontalo"},
-	}
+    userID := uint(123)
+    eventID := uint(456)
 
-    mockEventRepo.EXPECT().
-        FindEventID(userID).
-        Return(expectedEvents)
+    mockFollowEvent := core.FollowEventCore{
+        ID:     1,
+        UserID: userID,
+        EventID: eventID,
+    }
 
-    events := eventService.FindEventsFollow(userID)
+    mockEvent := core.EventCore{
+        ID:          eventID,
+        Title:       "Mock Event Title",
+        Date:        "Mock Event Date",
+        Description: "Mock Event Description",
+        Location:    "Mock Event Location",
+        FollowEvent: []core.FollowEventCore{mockFollowEvent},
+    }
 
-    assert.Empty(t, events)
-    assert.Equal(t, expectedEvents, events)
+    mockEventRepo.EXPECT().FindEventID(userID).Return([]core.FollowEventCore{mockFollowEvent}).Times(1)
+    mockEventRepo.EXPECT().FindEventByID(eventID).Return(mockEvent).Times(1)
+
+    event := eventService.FindEventsFollow(userID)
+    expectedEvent := []core.EventCore{mockEvent}
+
+    assert.NotNil(t, event)
+    assert.Equal(t, expectedEvent, event)
 }
 
+func TestGetEvent_Success(t *testing.T) {
+    ctrl := gomock.NewController(t)
+    defer ctrl.Finish()
 
-// func TestFindEventsFollow_Failure(t *testing.T) {
-//     ctrl := gomock.NewController(t)
-//     defer ctrl.Finish()
+    mockEventRepo := mocks.NewMockEventRepoInterface(ctrl)
+    expectedEvent := core.EventCore{
+        ID:          1,
+        Title:       "Sample Event",
+        Date:        "2023-10-29",
+        Description: "This is a sample event",
+        Location:    "Sample Location",
+    }
 
-//     mockEventRepo := mocks.NewMockEventRepoInterface(ctrl)
-//     eventService := NewEventService(mockEventRepo)
+    mockEventRepo.EXPECT().GetById(gomock.Any()).Return(expectedEvent, nil)
+    mockEventRepo.EXPECT().FindName(expectedEvent.ID).Return("John Doe")
 
-//     userID := uint(1)
-//     expectedError := errors.New("Simulated error")
+    eventService := NewEventService(mockEventRepo)
 
-//     mockEventRepo.EXPECT().
-//         FindEventID(userID).
-//         Return(nil, expectedError)
+    event, name, err := eventService.GetById(1)
+    
+    assert.Nil(t, err)
+    assert.NotNil(t, event)
+    assert.Equal(t, expectedEvent, event)
+    assert.Equal(t, "John Doe", name)
+}
 
-//     events := eventService.FindEventsFollow(userID)
+func TestGetEvent_Failure(t *testing.T) {
+    ctrl := gomock.NewController(t)
+    defer ctrl.Finish()
 
-//     assert.Error(t, expectedError)
-//     assert.Nil(t, events)
-// }
+    mockEventRepo := mocks.NewMockEventRepoInterface(ctrl)
+    mockEventRepo.EXPECT().GetById(gomock.Any()).Return(core.EventCore{}, errors.New("Database error"))
 
-// func TestGetEvent_Success(t *testing.T) {
-//     ctrl := gomock.NewController(t)
-//     defer ctrl.Finish()
+    eventService := NewEventService(mockEventRepo)
+    event, _, err := eventService.GetById(1)
 
-//     mockEventRepo := mocks.NewMockEventRepoInterface(ctrl)
-//     eventService := NewEventService(mockEventRepo)
-
-//     eventID := uint(1)
-//     expectedEvent := core.EventCore{
-//         ID: 1, Title: "Event 1", Date: "07-05-2023", Description: "events", Location: "Gorontalo",
-//     }
-
-//     // Menyiapkan ekspektasi pemanggilan metode GetById
-//     mockEventRepo.EXPECT().
-//         GetById(eventID).
-//         Return(expectedEvent, nil)
-
-//     retrievedEvent, _, err := eventService.GetById(eventID)
-
-//     assert.NoError(t, err)
-//     assert.Equal(t, expectedEvent, retrievedEvent)
-// }
-
-// func TestGetEvent_Failure(t *testing.T) {
-//     ctrl := gomock.NewController(t)
-//     defer ctrl.Finish()
-
-//     mockEventRepo := mocks.NewMockEventRepoInterface(ctrl)
-//     eventService := NewEventService(mockEventRepo)
-
-//     eventID := uint(1)
-//     expectedError := errors.New("Simulated error")
-
-//     // Menyiapkan ekspektasi pemanggilan metode GetById untuk menghasilkan error
-//     mockEventRepo.EXPECT().
-//         GetById(eventID).
-//         Return(core.EventCore{}, "", expectedError)
-
-//     retrievedEvent, _, err := eventService.GetById(eventID)
-
-//     assert.Error(t, err)
-//     assert.Equal(t, expectedError, err)
-//     assert.Empty(t, retrievedEvent)
-// }
+    expectedError := errors.New("Database error")
+    assert.Error(t, err)
+    assert.Equal(t, expectedError, err)
+    assert.Empty(t, event)
+}
