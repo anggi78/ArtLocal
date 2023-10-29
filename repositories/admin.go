@@ -12,7 +12,6 @@ import (
 type AdminRepoInterface interface {
 	CreateAdmin(core.Admin) (core.Admin, error)
 	LoginAdmin(email string, password string) (core.Admin, error)
-	//GetAll() ([]core.EventCore, error)
 	CreateEvent(event core.EventCore) (core.EventCore, error)
 	Update(AdminID int, admin *core.Admin) (*core.Admin, error)
 	DeleteEvent(AdminID int)
@@ -57,21 +56,6 @@ func (u *adminRepo) LoginAdmin(email string, password string) (core.Admin, error
 	log.Println(data)
 	return data, nil
 }
-
-// func (u *userRepo) GetAll() ([]core.EventCore, error) {
-// 	var events []model.Event
-// 	err := u.db.Find(&events).Error
-// 	if err != nil {
-// 		return nil, err
-// 	}
-
-// 	eventCores := []core.EventCore{}
-// 	for _, event := range events {
-// 		eventCore := core.EventModelToEventCore(event)
-// 		eventCores = append(eventCores, eventCore)
-// 	}
-// 	return eventCores, nil
-// }
 
 func (u *adminRepo) CreateEvent(event core.EventCore) (core.EventCore, error) {
 	insert := core.EventCoreToEventModel(event)

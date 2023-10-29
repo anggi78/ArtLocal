@@ -50,10 +50,7 @@ func (u *userService) GetAll() ([]core.User, error) {
 
 func (u *userService) Update(ID uint, user core.User) (core.User, string, error) {
 	user.Password = helpers.HashPassword(user.Password)
-    existingUser, err := u.repo.FindByID(ID)
-    if err != nil {
-        return core.User{}, "", err
-    }
+    existingUser, _ := u.repo.FindByID(ID)
 
     existingUser.Name = user.Name
     existingUser.Email = user.Email

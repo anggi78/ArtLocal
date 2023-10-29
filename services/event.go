@@ -75,10 +75,7 @@ func (e *eventService) Delete(id uint) (bool, error) {
 }
 
 func (e *eventService) Update(id uint, updateEvent core.EventCore) (core.EventCore, string, error) {
-	existingEvent, err := e.eventRepo.GetById(id)
-	if err != nil {
-		return core.EventCore{}, "", err
-	}
+	existingEvent, _:= e.eventRepo.GetById(id)
 
 	existingEvent.Title = updateEvent.Title
 	existingEvent.Date = updateEvent.Date

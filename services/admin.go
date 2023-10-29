@@ -11,7 +11,6 @@ import (
 type AdminServiceInterface interface {
 	CreateAdmin(admin core.Admin) (core.Admin, error)
 	LoginAdmin(email string, password string) (core.Admin,string, error)
-	//GetAll() ([]core.EventCore, error)
 	CreateEvent(event core.EventCore) (core.EventCore, error)
 	Update(AdminID int, admin *core.Admin) (*core.Admin, string, error)
 }
@@ -48,14 +47,6 @@ func (u *adminService) LoginAdmin(email string, password string) (core.Admin, st
 	return adminData, token, nil
 }
 
-// func (u *userService) GetAll() ([]core.EventCore, error) {
-// 	users, err := u.repo.GetAll()
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	return users, nil
-// }
-
 func (u *adminService) CreateEvent(event core.EventCore) (core.EventCore, error) {
 	events, err := u.repo.CreateEvent(event)
 	if err != nil {
@@ -66,10 +57,7 @@ func (u *adminService) CreateEvent(event core.EventCore) (core.EventCore, error)
 
 func (u *adminService) Update(AdminID int, admin *core.Admin) (*core.Admin, string, error) {
     admin.Password = helpers.HashPassword(admin.Password)
-    existingUser, err := u.repo.FindByID(AdminID)
-    if err != nil {
-        return &core.Admin{}, "", err
-    }
+    existingUser, _ := u.repo.FindByID(AdminID)
 
     existingUser.Name = admin.Name
     existingUser.Email = admin.Email
