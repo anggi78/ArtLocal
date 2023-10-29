@@ -91,15 +91,6 @@ func (e *EventRepo) GetById(id uint) (core.EventCore, error) {
 }
 
 func (e *EventRepo) Create(event core.EventCore) (core.EventCore, error) {
-	// eventInput := core.EventCoreToEventModel(event)
-	// err := e.db.Create(&eventInput).Error
-	// if err != nil {
-	// 	return event, err
-	// }
-
-	// result := core.EventModelToEventCore(eventInput)
-	// return result, nil
-
 	data := e.db.Begin()
 	if data.Error != nil {
 		return core.EventCore{}, data.Error
