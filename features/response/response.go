@@ -35,12 +35,6 @@ type AdminResponse struct {
 	Email  		string 	`json:"email"`
 }
 
-// type UserEventResponse struct {
-//     Event EventResponse `json:"event"`
-//     User  UserResponse  `json:"user"`
-// }
-
-
 func ResponseJSON(e echo.Context, status int, message string, data interface{}) error {
 	response := echo.Map{
 		"status": 	message,
