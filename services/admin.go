@@ -57,10 +57,7 @@ func (u *adminService) CreateEvent(event core.EventCore) (core.EventCore, error)
 
 func (u *adminService) Update(AdminID int, admin *core.Admin) (*core.Admin, string, error) {
     admin.Password = helpers.HashPassword(admin.Password)
-    existingUser, err := u.repo.FindByID(AdminID)
-    if err != nil {
-        return &core.Admin{}, "", err
-    }
+    existingUser, _ := u.repo.FindByID(AdminID)
 
     existingUser.Name = admin.Name
     existingUser.Email = admin.Email
