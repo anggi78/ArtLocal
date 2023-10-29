@@ -16,7 +16,7 @@ type AppConfig struct {
 func LoadAPP() *AppConfig {
 	var result = new(AppConfig)
 
-	godotenv.Load(".env")
+	godotenv.Load("ENV")
 
 	// var isRead = false
 	if v, found := os.LookupEnv("APP_PORT"); found {

@@ -8,7 +8,7 @@ import (
 )
 
 func CloudBucket() string {
-	err := godotenv.Load()
+	err := godotenv.Load("ENV")
 	if err != nil {
 		log.Fatal("can't load env file")
 	}
@@ -17,7 +17,7 @@ func CloudBucket() string {
 }
 
 func CloudAccount() string {
-	err := godotenv.Load()
+	err := godotenv.Load("ENV")
 	if err != nil {
 		log.Fatal("can't load env file")
 	}
@@ -26,7 +26,7 @@ func CloudAccount() string {
 }
 
 func CloudKeySecret() string {
-	err := godotenv.Load()
+	err := godotenv.Load("ENV")
 	if err != nil {
 		log.Fatal("can't load env file")
 	}
@@ -34,7 +34,7 @@ func CloudKeySecret() string {
 	return accesKeyId
 }
 func CloudKeyId() string {
-	err := godotenv.Load()
+	err := godotenv.Load("ENV")
 	if err != nil {
 		log.Fatal("can't load env file")
 	}

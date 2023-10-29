@@ -4,14 +4,15 @@ import (
 	"art-local/app/config"
 	"art-local/app/database"
 	"art-local/app/route"
-	"fmt"
+	"os"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
 
 func main() {
-	appConfig, dbConfig := config.InitConfig()
+	port := envPortOr("3000")
+	_, dbConfig := config.InitConfig()
 	database.InitDBMysql(dbConfig)
 
 	app := echo.New()
@@ -25,5 +26,13 @@ func main() {
 	route.EventRoute(app, database.DB)
 	route.AIReccRoute(app)
 	
-	app.Logger.Fatal(app.Start(fmt.Sprintf(":%d", appConfig.APP_PORT)))
+	app.Logger.Fatal(app.Start(port))
+}
+
+func envPortOr(port string) string {
+	// If `PORT` variable in the environment exists, return it
+	if envPort := os.Getenv("APP_PORT"); envPort != "" {
+		return ":" + envPort
+	}
+	return ":" + port
 }
