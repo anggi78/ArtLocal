@@ -18,14 +18,12 @@ func LoadAPP() *AppConfig {
 
 	godotenv.Load(".env")
 
-	// var isRead = false
 	if v, found := os.LookupEnv("APP_PORT"); found {
 		port, err := strconv.Atoi(v)
 		if err != nil {
 			logrus.Error("Config: invalid port value,", err.Error())
 			return nil
 		}
-		// isRead = true
 		result.APP_PORT = port
 	}
 	return result
