@@ -23,8 +23,7 @@ Anda dapat menggunakan API ini untuk berbagai keperluan seperti melihat, mencari
 
 ## Documentation
 
-Dokumentasi [Art Local](https://documenter.getpostman.com/view/23382236/2s9YXcdQ8H)
-
+Untuk informasi lebih lanjut tentang penggunaan dan dokumentasi lengkap API Art Local, silakan kunjungi [Art Local Documentation](https://documenter.getpostman.com/view/23382236/2s9YXcdQ8H). Di sana, Anda akan menemukan panduan lengkap yang membantu Anda memahami cara menggunakan API ini, menjalankan permintaan, dan mengintegrasikan Art Local dengan proyek Anda.
 
 ## Desain
 Berikut adalah skema desain ERD yang digunakan:
@@ -33,4 +32,4 @@ Berikut adalah skema desain ERD yang digunakan:
 
 ## Lisensi
 
-Proyek ini dilisensikan di bawah  [Lisensi MIT](https://choosealicense.com/licenses/mit/)
+Tentang Lisensi: Proyek ini didistribusikan di bawah [Lisensi MIT](https://choosealicense.com/licenses/mit/), yang memberi Anda kebebasan untuk menggunakan, menggandakan, memodifikasi, dan mendistribusikan kode sumber ini. Lisensi MIT mempromosikan kerjasama, pembagian pengetahuan, dan dukungan kepada komunitas pengembang. Kami mendorong Anda untuk menjelajahi dan berkontribusi pada proyek ini sesuai dengan ketentuan yang ada dalam lisensi.
