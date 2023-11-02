@@ -31,5 +31,4 @@ Berikut adalah skema desain ERD yang digunakan:
 ![Alt text](<mini project stupend-erd.drawio.png>)
 
 ## Lisensi
-
 Tentang Lisensi: Proyek ini didistribusikan di bawah [Lisensi MIT](https://choosealicense.com/licenses/mit/), yang memberi Anda kebebasan untuk menggunakan, menggandakan, memodifikasi, dan mendistribusikan kode sumber ini. Lisensi MIT mempromosikan kerjasama, pembagian pengetahuan, dan dukungan kepada komunitas pengembang. Kami mendorong Anda untuk menjelajahi dan berkontribusi pada proyek ini sesuai dengan ketentuan yang ada dalam lisensi.
