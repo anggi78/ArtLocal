@@ -29,7 +29,7 @@ Dokumentasi [Art Local](https://documenter.getpostman.com/view/23382236/2s9YXcdQ
 ## Desain
 Berikut adalah skema desain ERD yang digunakan:
 
-![Alt text](<mini project stupend-erd.drawio-1.png>)
+![Alt text](<mini project stupend-erd.drawio.png>)
 
 ## Lisensi
 
